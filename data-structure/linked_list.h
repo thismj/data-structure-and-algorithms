@@ -41,18 +41,15 @@ public:
     //返回链表数据个数
     int Size();
 
-    //反转单链表
-    void Reverse();
-
     //依次打印所有的数据
     void Print();
+
+    //头结点
+    Node<T> *head;
 
 private:
     //返回指定位置的结点指针
     Node<T> *findNode(int index);
-
-    //头结点
-    Node<T> *head;
 
     //记录数据个数
     int size;
@@ -60,7 +57,9 @@ private:
 
 template<class T>
 LinkedList<T>::LinkedList(): size(0) {
-    head = NULL;
+    head = nullptr;
+    cout << "head地址：" << &head << endl;
+    cout << "head值：" << head << endl;
 }
 
 /**
@@ -141,12 +140,13 @@ int LinkedList<T>::Size() {
 }
 
 /**
- * 通过遍历所有结点，反转单链表
+ * 通过迭代方式反转单链表
+ * @return 新的头结点
  */
 template<class T>
-void LinkedList<T>::Reverse() {
-    if (head == NULL || head->next == NULL) {
-        return;
+Node<T> *ReverseByIterate(Node<T> *head) {
+    if (!head || !head->next) {
+        return head;
     }
     Node<T> *pre = head;
     Node<T> *current = head->next;
@@ -158,8 +158,76 @@ void LinkedList<T>::Reverse() {
         current = temp;
     }
 
-    head->next = NULL;
-    head = pre;
+    head->next = nullptr;
+    return pre;
 }
+
+/**
+ * 通过递归方式反转单链表
+ * @return 新的头结点
+ */
+template<class T>
+Node<T> *ReverseByRecursive(Node<T> *head) {
+    if (!head || !head->next) {
+        return head;
+    }
+
+    Node<T> *current = ReverseByRecursive(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return current;
+}
+
+/**
+ * 依次把后面的结点插入到头结点前面反转单链表
+ * @return 新的头结点
+ */
+template<class T>
+Node<T> *ReverseByInsert(Node<T> *head) {
+    if (!head || !head->next) {
+        return head;
+    }
+
+    Node<T> *current = head->next;
+    head->next = nullptr;
+    Node<T> *temp;
+    while (current) {
+        temp = current->next;
+        current->next = head;
+        head = current;
+        current = temp;
+    }
+    return head;
+}
+
+/**
+ * 借助数组反转单链表（浪费空间）
+ */
+template<class T>
+void ReverseByArray(LinkedList<T> list) {
+//    if (size < 2) {
+//        return;
+//    }
+//
+//    Node<T> *nodeArray[size];
+//    Node<T> *current = head;
+//    int position = 0;
+//    while (current) {
+//        nodeArray[position] = current;
+//        current = current->next;
+//        position++;
+//    }
+//
+//    for (int i = 0; i < size; ++i) {
+//        if (i == 0) {
+//            nodeArray[i]->next = NULL;
+//        } else {
+//            nodeArray[i]->next = nodeArray[i - 1];
+//        }
+//    }
+//
+//    head = nodeArray[size - 1];
+}
+
 
 #endif //DATA_STRUCTURE_AND_ALGORITHMS_LINKED_LIST_H
