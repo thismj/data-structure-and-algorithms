@@ -3,4 +3,4 @@ project(data-structure-and-algorithms)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp data-structure/binary_tree.h)

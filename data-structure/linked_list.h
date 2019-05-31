@@ -1,7 +1,7 @@
 //
 // Copyright 2019 ThisMJ.
 //
-// 单链表实现
+// 单链表实现 c++
 //
 #include <iostream>
 
@@ -11,11 +11,11 @@
 using namespace std;
 
 template<class T>
-struct Node {
+struct ListNode {
     //数据域
     T data;
     //指针域
-    Node<T> *next;
+    ListNode<T> *next;
 };
 
 /**
@@ -45,11 +45,11 @@ public:
     void Print();
 
     //头结点
-    Node<T> *head;
+    ListNode<T> *head;
 
 private:
     //返回指定位置的结点指针
-    Node<T> *findNode(int index);
+    ListNode<T> *findNode(int index);
 
     //记录数据个数
     int size;
@@ -58,20 +58,18 @@ private:
 template<class T>
 LinkedList<T>::LinkedList(): size(0) {
     head = nullptr;
-    cout << "head地址：" << &head << endl;
-    cout << "head值：" << head << endl;
 }
 
 /**
  * 此方法用来返回单链表指定位置的结点指针，方便进行插入、删除、更新等操作
  */
 template<class T>
-Node<T> *LinkedList<T>::findNode(int index) {
+ListNode<T> *LinkedList<T>::findNode(int index) {
     if (index < 0 || index >= size) {
         throw std::invalid_argument("Find Error Index:" + to_string(index));
     }
 
-    Node<T> *current = head;
+    ListNode<T> *current = head;
     int position = 0;
     while (position < index) {
         current = current->next;
@@ -82,20 +80,20 @@ Node<T> *LinkedList<T>::findNode(int index) {
 
 template<class T>
 T LinkedList<T>::Get(int index) {
-    Node<T> *node = findNode(index);
+    ListNode<T> *node = findNode(index);
     return node->data;
 }
 
 template<class T>
 void LinkedList<T>::Insert(int index, T data) {
-    auto *node = new Node<T>();
+    auto *node = new ListNode<T>();
     node->data = data;
 
     if (index == 0) {
         node->next = head;
         head = node;
     } else {
-        Node<T> *pre = findNode(index - 1);
+        ListNode<T> *pre = findNode(index - 1);
         node->next = pre->next;
         pre->next = node;
     }
@@ -104,8 +102,8 @@ void LinkedList<T>::Insert(int index, T data) {
 
 template<class T>
 void LinkedList<T>::Delete(int index) {
-    Node<T> *pre;
-    Node<T> *current;
+    ListNode<T> *pre;
+    ListNode<T> *current;
     if (index == 0) {
         pre = head;
     } else {
@@ -120,13 +118,13 @@ void LinkedList<T>::Delete(int index) {
 
 template<class T>
 void LinkedList<T>::Update(int index, T data) {
-    Node<T> *current = findNode(index);
+    ListNode<T> *current = findNode(index);
     current->data = data;
 }
 
 template<class T>
 void LinkedList<T>::Print() {
-    Node<T> *temp = head;
+    ListNode<T> *temp = head;
     while (temp) {
         cout << temp->data << " ";
         temp = temp->next;
@@ -144,13 +142,13 @@ int LinkedList<T>::Size() {
  * @return 新的头结点
  */
 template<class T>
-Node<T> *ReverseByIterate(Node<T> *head) {
+ListNode<T> *ReverseByIterate(ListNode<T> *head) {
     if (!head || !head->next) {
         return head;
     }
-    Node<T> *pre = head;
-    Node<T> *current = head->next;
-    Node<T> *temp;
+    ListNode<T> *pre = head;
+    ListNode<T> *current = head->next;
+    ListNode<T> *temp;
     while (current) {
         temp = current->next;
         current->next = pre;
@@ -167,12 +165,12 @@ Node<T> *ReverseByIterate(Node<T> *head) {
  * @return 新的头结点
  */
 template<class T>
-Node<T> *ReverseByRecursive(Node<T> *head) {
+ListNode<T> *ReverseByRecursive(ListNode<T> *head) {
     if (!head || !head->next) {
         return head;
     }
 
-    Node<T> *current = ReverseByRecursive(head->next);
+    ListNode<T> *current = ReverseByRecursive(head->next);
     head->next->next = head;
     head->next = nullptr;
     return current;
@@ -183,14 +181,14 @@ Node<T> *ReverseByRecursive(Node<T> *head) {
  * @return 新的头结点
  */
 template<class T>
-Node<T> *ReverseByInsert(Node<T> *head) {
+ListNode<T> *ReverseByInsert(ListNode<T> *head) {
     if (!head || !head->next) {
         return head;
     }
 
-    Node<T> *current = head->next;
+    ListNode<T> *current = head->next;
     head->next = nullptr;
-    Node<T> *temp;
+    ListNode<T> *temp;
     while (current) {
         temp = current->next;
         current->next = head;
@@ -209,8 +207,8 @@ void ReverseByArray(LinkedList<T> list) {
 //        return;
 //    }
 //
-//    Node<T> *nodeArray[size];
-//    Node<T> *current = head;
+//    ListNode<T> *nodeArray[size];
+//    ListNode<T> *current = head;
 //    int position = 0;
 //    while (current) {
 //        nodeArray[position] = current;
